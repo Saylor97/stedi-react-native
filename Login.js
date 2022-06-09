@@ -11,7 +11,7 @@ const Login = () => {
         style={styles.input}
         onChangeText={setPhoneNumber}
         value={phoneNumber}
-        placeHolder = "360-984-1155"
+        placeholder = "360-984-1155"
       />
       <TextInput
         style={styles.input}
