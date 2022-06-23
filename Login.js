@@ -59,7 +59,7 @@ const Login = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={()=>{
-          getToken(phoneNumber, oneTimePassword)
+          getToken({phoneNumber, oneTimePassword})
         }}
         
         // onPress={()=>{console.log("Login button was clicked")}}
