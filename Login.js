@@ -12,7 +12,7 @@ const sendText = async (phoneNumber) => {
   });
 }
 
-const getToken = async ({phoneNumber, oneTimePassword}) => {
+const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) => {
   const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
     method: 'POST',
     body:JSON.stringify({oneTimePassword, phoneNumber}),
@@ -21,12 +21,17 @@ const getToken = async ({phoneNumber, oneTimePassword}) => {
     }
   });
 
+  const responseCode = tokenResponse.status;//200 means logged in successfully
+  console.log("Response Status Code", responseCode);
+  if(responseCode==200){
+    setUserLoggedIn(true);
+  }
   const tokenResponseString = await tokenResponse.text();
 }
 
-const Login = () => {
-  const [count, setCount] = useState(0);
-  const onPress = () => setCount(prevCount => prevCount + 1);
+const Login = (props) => {
+  // const [count, setCount] = useState(0);
+  // const onPress = () => setCount(prevCount => prevCount + 1);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [oneTimePassword, setOneTimePassword] = useState(null);
 
@@ -39,6 +44,14 @@ const Login = () => {
         placeholder = "360-984-1155"
         placeholderTextColor = "#add8e6"
       />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={()=>{
+          sendText(phoneNumber)
+        }}
+      >
+        <Text>Send Text</Text>
+      </TouchableOpacity>
       <TextInput
         style={styles.input}
         onChangeText={setOneTimePassword}
@@ -51,18 +64,8 @@ const Login = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={()=>{
-          sendText(phoneNumber)
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
         }}
-      >
-        <Text>Send Text</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={()=>{
-          getToken({phoneNumber, oneTimePassword})
-        }}
-        
-        // onPress={()=>{console.log("Login button was clicked")}}
       >
         <Text>Login</Text>
       </TouchableOpacity>

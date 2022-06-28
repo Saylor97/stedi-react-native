@@ -15,8 +15,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function App(props) {
 const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-if(userLoggedIn){
-
+if(userLoggedIn)
 return(
     <NavigationContainer>
       <Tab.Navigator
@@ -57,10 +56,10 @@ return(
       </Tab.Navigator>
     </NavigationContainer>
   );
-} else {
+else {
 
   return(
-    <Login/>
+    <Login setUserLoggedIn={setUserLoggedIn}/>
   )
 }
 
