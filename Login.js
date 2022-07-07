@@ -12,7 +12,7 @@ const sendText = async (phoneNumber) => {
   });
 }
 
-const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) => {
+const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn, setUserName}) => {
 
   // setUserLoggedIn(true)
 
@@ -31,12 +31,13 @@ const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) => {
   }
 
   const tokenResponseString = await tokenResponse.text();
-  console.log("Token",tokenResponseString);
+  console.log("Token:",tokenResponseString);
 
-  const getUsername = await fetch("https://dev.stedi.me/validate/"+tokenResponseString)
+  const getUserName = await fetch("https://dev.stedi.me/validate/"+tokenResponseString)
 
-  const getUsernameString = await getUsername.text();
-  console.log("Username",getUsernameString)
+  const email = await getUserName.text();
+  console.log("Username:",email)
+  setUserName(email);
 }
 
 
@@ -79,7 +80,7 @@ const Login = (props) => {
         style={styles.button}
         onPress={()=>{
          
-          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn, setUserName:props.setUserName});
         }}
       >
         <Text>Login</Text>
